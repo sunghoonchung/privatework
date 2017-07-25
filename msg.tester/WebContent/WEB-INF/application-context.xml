@@ -1,0 +1,80 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd	">
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven />
+
+	<context:property-placeholder location="WEB-INF/*.properties"
+		ignore-resource-not-found="true" />
+
+	<context:component-scan base-package="sim" />
+	<context:annotation-config />
+
+	<!--Resolves Excel View -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="1" />
+	</bean>
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/resources/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<tx:annotation-driven proxy-target-class="true" />
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:sim/net/**/dao/xml/*.xml" />
+		<property name="configLocation" value="/WEB-INF/mybatis-config.xml" />
+	</bean>
+
+	<!-- Emerald 테스트용 postgresql -->
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url"
+			value="jdbc:postgresql://182.162.100.120:7349/bxt_db" />
+		<property name="username" value="bxt" />
+		<property name="password" value="bxt" />
+		<property name="maxActive" value="5" />
+		<property name="maxIdle" value="5" />
+		<property name="minIdle" value="1" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="10000" />
+		<property name="numTestsPerEvictionRun" value="10" />
+		<property name="validationQuery" value="select version()" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="30" />
+		<property name="logAbandoned" value="true" />
+		<property name="testWhileIdle" value="true" />
+	</bean>
+
+
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="sim.net.http.TestHttpInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- Register Custom Bean ############################################### -->
+
+
+	<!-- // End of Registering Custom Beans ############################################### -->
+
+</beans>
