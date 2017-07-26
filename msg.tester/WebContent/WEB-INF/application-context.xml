@@ -13,7 +13,7 @@
 	<context:property-placeholder location="WEB-INF/*.properties"
 		ignore-resource-not-found="true" />
 
-	<context:component-scan base-package="sim" />
+	<context:component-scan base-package="msg" />
 	<context:annotation-config />
 
 	<!--Resolves Excel View -->
@@ -39,7 +39,7 @@
 	<!-- define the SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath:sim/net/**/dao/xml/*.xml" />
+		<property name="mapperLocations" value="classpath:msg/tester/**/dao/xml/*.xml" />
 		<property name="configLocation" value="/WEB-INF/mybatis-config.xml" />
 	</bean>
 
@@ -68,7 +68,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<bean class="sim.net.http.TestHttpInterceptor"></bean>
+			<bean class="msg.tester.http.HttpInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
 
