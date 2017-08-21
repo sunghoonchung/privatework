@@ -12,6 +12,7 @@
 			<param-value>/WEB-INF/application-context.xml</param-value>
 		</init-param>
 	</servlet>
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/application-context.xml</param-value>
@@ -20,25 +21,61 @@
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/log4j.xml</param-value>
 	</context-param>
+
+	<!-- H2 Database Parameter -->
+	<context-param>
+		<param-name>db.url</param-name>
+		<param-value>jdbc:h2:/data/bxt</param-value>
+	</context-param>
+	<context-param>
+		<param-name>db.user</param-name>
+		<param-value>sa</param-value>
+	</context-param>
+	<context-param>
+		<param-name>db.password</param-name>
+		<param-value>sa</param-value>
+	</context-param>
+	<context-param>
+		<param-name>db.tcpServer</param-name>
+		<param-value>-tcp -tcpAllowOthers -tcpPort 8090 -baseDir /data/bxt</param-value>
+	</context-param>
+
+	<!-- Spring Default Listener -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+	<!-- Log4j Default Listener -->
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
+
+	<!-- Custom Listener -->
+	<listener>
+		<listener-class>msg.tester.http.BxtServletContextListener</listener-class>
+	</listener>
+
+	<!-- H2 Database Starter -->
+	<listener>
+		<listener-class>org.h2.server.web.DbStarter</listener-class>
+	</listener>
+
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
 	<session-config>
 		<session-timeout>300</session-timeout>
 	</session-config>
+
 	<jsp-config>
 		<taglib>
 			<taglib-uri>/taglib/c.tld</taglib-uri>
 			<taglib-location>/WEB-INF/taglib/c.tld</taglib-location>
 		</taglib>
 	</jsp-config>
+
 </web-app>
 
 

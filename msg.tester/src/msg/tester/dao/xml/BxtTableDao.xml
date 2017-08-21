@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="msg.tester.dao.BxtTableDao">
+	
+	<select id="selectAll" resultType="msg.tester.domain.BxtTableDto">
+		select 
+			col1 as col1
+			, col2 as col2
+			, col3 as col3
+		from bxt_table
+	</select>
+
+	<insert id="insert" parameterType="msg.tester.domain.BxtTableDto">
+		insert into bxt_table
+		(
+			  col1, col2, col3
+		)
+		values(
+			#{col1, jdbcType=VARCHAR}
+			, #{col2, jdbcType=VARCHAR}
+			, #{col3, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="msg.tester.domain.BxtTableDto">
+		update
+			bxt_table
+		set
+			col2 = #{col2, jdbcType=VARCHAR}
+			, col3 = #{col3, jdbcType=VARCHAR}
+		where
+			col1 = #{col1, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from bxt_table
+		where 
+			col1 = #{col1, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

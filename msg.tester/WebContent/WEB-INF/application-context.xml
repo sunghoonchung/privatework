@@ -13,13 +13,8 @@
 	<context:property-placeholder location="WEB-INF/*.properties"
 		ignore-resource-not-found="true" />
 
-	<context:component-scan base-package="msg" />
+	<context:component-scan base-package="msg.tester" />
 	<context:annotation-config />
-
-	<!--Resolves Excel View -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
-		<property name="order" value="1" />
-	</bean>
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
@@ -31,6 +26,15 @@
 
 	<tx:annotation-driven proxy-target-class="true" />
 
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="msg.tester.http.HttpInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- Register Custom Bean ############################################### -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
@@ -43,37 +47,19 @@
 		<property name="configLocation" value="/WEB-INF/mybatis-config.xml" />
 	</bean>
 
-	<!-- Emerald 테스트용 postgresql -->
-	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
-		<property name="driverClassName" value="org.postgresql.Driver" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url"
-			value="jdbc:postgresql://182.162.100.120:7349/bxt_db" />
-		<property name="username" value="bxt" />
-		<property name="password" value="bxt" />
-		<property name="maxActive" value="5" />
-		<property name="maxIdle" value="5" />
+			value="jdbc:h2:tcp://localhost:8090//data/bxt;MODE=Oracle" />
+		<property name="username" value="sa" />
+		<property name="password" value="sa" />
 		<property name="minIdle" value="1" />
-		<property name="timeBetweenEvictionRunsMillis" value="60000" />
-		<property name="minEvictableIdleTimeMillis" value="10000" />
-		<property name="numTestsPerEvictionRun" value="10" />
-		<property name="validationQuery" value="select version()" />
-		<property name="removeAbandoned" value="true" />
-		<property name="removeAbandonedTimeout" value="30" />
-		<property name="logAbandoned" value="true" />
-		<property name="testWhileIdle" value="true" />
 	</bean>
 
-
-	<!-- Interceptors -->
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="msg.tester.http.HttpInterceptor"></bean>
-		</mvc:interceptor>
-	</mvc:interceptors>
-
-	<!-- Register Custom Bean ############################################### -->
-
+	<!-- mybatis configuration -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="msg.tester" />
+	</bean>
 
 	<!-- // End of Registering Custom Beans ############################################### -->
 
