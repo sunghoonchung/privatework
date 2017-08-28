@@ -40,7 +40,7 @@ public class HttpInterceptor implements HandlerInterceptor {
 			response.setHeader("Cache-Control", "no-cache");
 		}
 		logger.debug("------------------------------------------------------------------");
-		logger.debug(" END : Request = {}, {}", req.getRequestURI(), req.getMethod());
+		logger.info(" END : Request = {}, {}", req.getRequestURI(), req.getMethod());
 		logger.debug("------------------------------------------------------------------");
 	}
 
@@ -48,7 +48,7 @@ public class HttpInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
 
 		logger.debug("------------------------------------------------------------------");
-		logger.debug(" START : Request = {}, {}", req.getRequestURI(), req.getMethod());
+		logger.info(" START : Request = {}, {}", req.getRequestURI(), req.getMethod());
 		logger.debug("------------------------------------------------------------------");
 
 		HttpSession session = req.getSession();
